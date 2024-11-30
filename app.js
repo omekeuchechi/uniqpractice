@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { default: mongoose } = require('mongoose');
+const morgan = require('morgan');
 require('dotenv').config();
 
 const app = express();
@@ -13,6 +14,7 @@ const userRouter = require('./routes/user');
 
 // middleware
 app.use(bodyParser.json());
+app.use(morgan('tiny'));
 app.use(`${api}/user`, userRouter);
 
 
