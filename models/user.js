@@ -2,18 +2,18 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
     name : {type: String, required: true},
-    email : {type: String, required: true},
-    password : {type: String, required: true},
-    phoneNumber : String,
-    dataOfBirth : String,
-    avater : String,
-    postCreated : [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
-    commentCreated : [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
-    commetsLiked : [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
-    postLinked : [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
-    isAdmin : Boolean,
-    country : String,
-    city : String
+    email: {type: String, required: true},
+    password: {type: String, required: true},
+    phoneNumber: String,
+    dateOfBirth: Date,
+    avatar: String,
+    postCreated: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
+    commentCreated: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
+    commentsLiked: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
+    postsLiked: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
+    isAdmin: {type: Boolean, default: false},
+    country: String,
+    city: String
 });
 
 const User = mongoose.model("User", userSchema);

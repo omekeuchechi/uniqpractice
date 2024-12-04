@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
 const postSchema = mongoose.Schema({
-    category : String,
-    content : String,
-    createdBy : [{type: mongoose.Types.ObjectId, ref: "User"}],
-    dataCreated : [{type: Date, default: Date.now()}],
-    likeBy : [{type: mongoose.Types.ObjectId, ref: "User"}],
-    comments : [{type: mongoose.Types.ObjectId, ref: "Comment"}],
+    category: {type: String, required: true},
+    content: {type: String, required: true},
+    createdby: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    datecreated: {type: Date, default: Date.now},
+    likedBy: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+    comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
 });
 
 const Post = mongoose.model('Post', postSchema);

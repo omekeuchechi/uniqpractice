@@ -11,11 +11,13 @@ const api = process.env.API_URL;
 const CONNECTION_STRING = process.env.CONN_STRING;
 
 const userRouter = require('./routes/user');
+const postRoutes = require('./routes/post');
 
 // middleware
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
 app.use(`${api}/user`, userRouter);
+app.use(`${api}/post`, postRoutes);
 
 
 // get / post /

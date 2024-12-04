@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const authJs = require('../middlewares/auth');
+
 
 router.post(`/create`, async (req, res) => {
     try {
@@ -37,6 +40,50 @@ router.post(`/create`, async (req, res) => {
             error: err
         })
     }
+})
+
+router.post('/login', async (req, res) => {
+    
+    try{
+        const user = await User.findOne({email: req.body.email});
+    
+        if(!user){
+            return res.status(401).json('User does not exist');
+        }
+
+        const result = await bcrypt.compare(req.body.password, user.password);
+
+        if(user && result){
+            const token = jwt.sign({userId: user._id, isAdmin: user.isAdmin}, 
+                process.env.TOKEN_SECRET, {expiresIn: '1d'});
+
+            return res.status(200).json({
+                message: "user authenticated",
+                token: token
+            });
+        }
+    }catch(error){
+        res.status(500).json({
+            message: "Internal server error",
+            error: error 
+        })
+    }
+
+})
+
+router.get('/', authJs, async (req, res)=> {
+    const isAdmin = req.decoded.isAdmin;
+    
+    if(!isAdmin){
+        return res.status(400).send("You are not an admin");
+    }
+
+    const users = await User.find();
+
+    res.status(200).json({
+        message: "Users fetched successfully",
+        users: users
+    })
 })
 
 module.exports = router;
