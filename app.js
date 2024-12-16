@@ -12,12 +12,14 @@ const CONNECTION_STRING = process.env.CONN_STRING;
 
 const userRouter = require('./routes/user');
 const postRoutes = require('./routes/post');
+const commentRouter = require('./routes/comment');
 
 // middleware
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
 app.use(`${api}/user`, userRouter);
 app.use(`${api}/post`, postRoutes);
+app.use(`${api}/post`, commentRouter);
 
 
 // get / post /

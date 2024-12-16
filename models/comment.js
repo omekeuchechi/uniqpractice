@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const commentSchema = mongoose.Schema({
     content: String,
     createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    dataCreatedBy: {type: Date, default: Date.now()},
-    comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
+    dataCreated: {type: Date, default: Date.now()},
     likedBy: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-    parentComment: {type: mongoose.Schema.Types.ObjectId, ref: 'Comment'},
-    post: {type: mongoose.Schema.Types.ObjectId, ref: 'Post'}
+    post: {type: mongoose.Schema.Types.ObjectId, ref: 'Post'},
+    parentComment: {type: mongoose.Schema.Types.ObjectId, default: null, ref: 'Comment'},
+    replies: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]
 });
 
 const Comment = mongoose.model('Comment', commentSchema);

@@ -13,6 +13,7 @@ const authJs = (req, res, next) => {
 
     try{
         const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+
         req.decoded = decoded;
         next();
     }catch(error){
