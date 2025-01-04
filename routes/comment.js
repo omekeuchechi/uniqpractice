@@ -57,12 +57,23 @@ router.post('/commentId/createComment', async (req, res) => {
         const parentComment = await Comment.find(commentId);
         parentComment.replies.push(reply._Id)
     } catch (error) {
-        
+        res.status(500).json({
+            message: "internal server error",
+            error: error
+        })
     }
 })
 
 router.get('/comments', async (req, res) => {
-
+    try {
+        const comments = await Comment.find().populate('post', ['title', 'content', 'createdAt', 'createdBy']).populate('replies', ['content', 'createdAt', 'createdBy']);
+        res.status(200).json(comments);
+    } catch (error) {
+        res.status(500).json({
+            message: "internal server error",
+            error: error
+        })
+    }
 })
 
 module.exports = router;

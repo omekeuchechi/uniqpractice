@@ -21,8 +21,42 @@ exports.storage = multer.diskStorage({
         }
 
         if (fs.existsSync(uploadPath) && file.fieldname == 'avater') {
-            uploadPath = 
+            uploadPath = `${uploadPath}/avater`;
+            if (!fs.existsSync(uploadPath)) {
+                fs.mkdirSync(uploadPath);
+            } else if (fs.existsSync(uploadPath) && file.fieldname == 'files') {
+                uploadPath = `${uploadPath}/files`;
+                if (!fs.existsSync(uploadPath)) {
+                    fs.mkdirSync(uploadPath);
+                }
+            }
+
+
+            cb(null, uploadPath);
+
         }
 
+    },
+
+    filename: (req, file, cb) => {
+        const fileExt = path.extname(file.originalname);
+        const spliteFileName = file.originalname.split('.');
+        const fileName = spliteFileName.split(' ')[0] + fileExt;
+
+        cb(null, fileName);
     }
-})
+ });
+
+ exports.fileFilter = (req, file, cb) => {
+    let allowedTypes;
+
+    if (file.fieldname == 'avater') {
+        allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+        if (allowedTypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else{
+            cb(new Error('Invalid file type. Only PNG, JPEG, and JPG are allowed.'), false);
+        }
+    }
+ }

@@ -125,7 +125,7 @@ router.patch('/profile', authJs, async (req, res) => {
                 user.isAdmin = userInfo.admin;
                 break;
             default:
-                user = user;
+                return user;
         }
     }
 
