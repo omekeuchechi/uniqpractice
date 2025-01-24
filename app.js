@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(morgan('tiny'));
 app.use(`${api}/user`, userRouter);
 app.use(`${api}/post`, postRoutes);
-app.use(`${api}/post`, commentRouter);
+app.use(`${api}/comment`, commentRouter);
 
 
 // get / post /
