@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
 
 })
 
-router.get('/', async (req, res)=> {
+router.get('/', authJs, async (req, res)=> {
     const isAdmin = req.decoded.isAdmin;
     
     if(!isAdmin){
