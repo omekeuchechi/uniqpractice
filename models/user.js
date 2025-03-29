@@ -13,7 +13,8 @@ const userSchema = mongoose.Schema({
     postsLiked: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
     isAdmin: {type: Boolean, default: false},
     country: String,
-    city: String
+    city: String,
+    datecreated: {type: Date, default: Date.now},
 });
 
 const User = mongoose.model('User', userSchema);

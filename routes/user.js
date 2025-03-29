@@ -4,6 +4,9 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const authJs = require('../middlewares/auth');
+const multer  = require('multer');
+const { storage, fileFilter } = require('../middlewares/multerStorage');
+const upload = multer({ storage, fileFilter });
 
 
 router.post('/create', async (req, res)=> { //localhost:3000/api/v1/user/create
@@ -60,6 +63,7 @@ router.post('/login', async (req, res) => {
 
             return res.status(200).json({
                 message: "user authenticated",
+                user: user,
                 token: token
             });
         }
@@ -164,5 +168,38 @@ router.delete('/:userId', authJs, async (req, res) => {
         })
     }
 })
+
+router.patch('/profile_image', authJs, upload.single('avatar'), async (req, res) => {
+    const userId = req.decoded.userId;
+    const userInfo = req.body;
+
+    let user = await User.findById(userId);
+
+    if(!user){
+        return res.status(400).send("Couldn't find user");
+    }
+
+    for(propName in userInfo){
+        switch(propName){
+            case 'avater':
+                user.avater = userInfo.avater || userInfo.avatar;
+                break;
+            default:
+                return user;
+        }
+    }
+
+    try{
+        const response = await user.save();
+        res.status(200).json({message: "User profile image updated successfully", user: response});
+    }catch(error){
+        res.status(500).json({
+            message: "Something occurred could not update user profile", 
+            error: error
+        });
+    }
+
+});
+
 
 module.exports = router;
